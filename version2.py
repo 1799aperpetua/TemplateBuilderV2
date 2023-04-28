@@ -3,6 +3,7 @@ import tkinter
 import csv
 from docx import Document
 from docx.shared import Pt
+from docx.enum.text import WD_LINE_SPACING
 import math
 from openpyxl import load_workbook
 import os
@@ -136,6 +137,9 @@ def buildTemplate(template, xl_file):
                     cell.text = attendees.pop()
                     cell.paragraphs[0].runs[0].font.name = "Calibri (Body)"
                     cell.paragraphs[0].runs[0].font.size = Pt(11)
+                    cell.paragraphs[0].paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+                    cell.paragraphs[0].paragraph_format.space_before = Pt(0)
+                    cell.paragraphs[0].paragraph_format.space_after = Pt(0)
 
     def updateHeader(header_data, document):
         '''
@@ -152,31 +156,44 @@ def buildTemplate(template, xl_file):
         date_cell.text = header_data['date']
         date_cell.paragraphs[0].runs[0].font.name = "Calibri (Body)"
         date_cell.paragraphs[0].runs[0].font.size = Pt(11)
+        date_cell.paragraphs[0].paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+        date_cell.paragraphs[0].paragraph_format.space_before = Pt(0)
+        date_cell.paragraphs[0].paragraph_format.space_after = Pt(0)
 
         facil_cell = table.cell(1, 1)
         facil_cell.text = header_data['facil']
         facil_cell.paragraphs[0].runs[0].font.name = "Calibri (Body)"
         facil_cell.paragraphs[0].runs[0].font.size = Pt(11)
+        facil_cell.paragraphs[0].paragraph_format.line_spacing = 0
+        facil_cell.paragraphs[0].paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+        facil_cell.paragraphs[0].paragraph_format.space_before = Pt(0)
+        facil_cell.paragraphs[0].paragraph_format.space_after = Pt(0)
 
         time_cell = table.cell(1, 3)
         time_cell.text = header_data['time']
         time_cell.paragraphs[0].runs[0].font.name = "Calibri (Body)"
         time_cell.paragraphs[0].runs[0].font.size = Pt(11)
+        time_cell.paragraphs[0].paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+        time_cell.paragraphs[0].paragraph_format.space_before = Pt(0)
+        time_cell.paragraphs[0].paragraph_format.space_after = Pt(0)
 
         title_cell = table.cell(2, 1)
         title_cell.text = header_data['title']
         title_cell.paragraphs[0].runs[0].font.name = "Calibri (Body)"
         title_cell.paragraphs[0].runs[0].font.size = Pt(11)
+        title_cell.paragraphs[0].paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+        title_cell.paragraphs[0].paragraph_format.space_before = Pt(0)
+        title_cell.paragraphs[0].paragraph_format.space_after = Pt(0)
 
     meetings = captureTemplateData(xl_file) # grab each meeting's info from the loaded excel book
 
     for meeting in meetings: # Loop through each meeting object [header_data dict, attendees list] and build a template for it
 
         header_data = meeting[0]
-        print("Header Data", header_data)
+        #print("Header Data", header_data)
         print("Creating a template for:", header_data['title'], "at", header_data['time'], "on", header_data['date'])
         attendees = meeting[1] # Current meeting's attendees
-        print("Including the following attendees:", attendees)
+        #print("Including the following attendees:", attendees)
 
         doc = Document(f'{template}') # Open up our project template as a word doc
 
@@ -197,14 +214,16 @@ def buildTemplate(template, xl_file):
 templates = {
     '1' : 'Base_Templates/fwb-template.docx',
     '2' : 'Base_Templates/oe-template.docx', 
-    '3' : 'Base_Templates/sw-template.docx'
+    '3' : 'Base_Templates/sw-template.docx',
+    '4' : 'Base_Templates/cmp-template.docx',
+    '5' : 'Base_Templates/qh-template.docx',
 }
 
-user_inp = input("Enter 1 for FWB, 2 for OE, 3 for SW: ")
+user_inp = input("Enter 1 for FWB, 2 for OE, 3 for SW, 4 for CMP, 5 for QH: ")
 
 project_template = templates.get(user_inp)
 
-xl_file = 'mtg_builder_4-18-FWB.xlsx' # Which file contains our template information?
+xl_file = 'mtg_builder_4-28-qh.xlsx' # Which file contains our template information?
 
 buildTemplate(template = project_template, xl_file = xl_file)
 
