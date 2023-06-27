@@ -84,7 +84,7 @@ def buildTemplate(template, xl_file):
             pass
         
         # Build the filename: yymmdd_Mtg Notes_title_time.docx
-        filename = built_date + "_Mtg Notes_" + title + "_" + mtg_time + ".docx"
+        filename = built_date + "_" + title + "_" + mtg_time + ".docx"
         return filename
     
     def updateAttendees(attendees, document):
