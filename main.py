@@ -24,38 +24,55 @@ class App(customtkinter.CTk):
 
         # Header label
         self.header_label = customtkinter.CTkLabel(master=self, text="Select Desired Project")
-        self.header_label.grid(row = 0, column = 0, padx = 20, pady = (20, 0), sticky="w")
+        self.header_label.grid(row = 0, column = 0, columnspan = 2, padx = 20, pady = (20, 0), sticky="w")
 
         # Project variable
         sport = customtkinter.StringVar()
         sport.set("FWB")
 
         # Project radiobuttons
-        self.project_fwb_button = customtkinter.CTkRadioButton(master = self, text = "FWB", variable = sport, value = "FWB")
-        self.project_fwb_button.grid(row = 4, column = 0, padx = 20, pady = (20, 0), sticky="ew")
+        self.project_button_a = customtkinter.CTkRadioButton(master = self, text = "FWB", variable = sport, value = "FWB")
+        self.project_button_b = customtkinter.CTkRadioButton(master = self, text = "CMP", variable = sport, value = "CMP")
+        self.project_button_c = customtkinter.CTkRadioButton(master = self, text = "OE", variable = sport, value = "OE")
+        self.project_button_d = customtkinter.CTkRadioButton(master = self, text = "SS", variable = sport, value = "SS")
+        self.project_button_e = customtkinter.CTkRadioButton(master = self, text = "QH", variable = sport, value = "QH")
 
-        # Select Excel file header
+        self.project_button_a.grid(row = 1, column = 0, padx = 20, pady = (10, 0), sticky="ew")
+        self.project_button_b.grid(row = 1, column = 1, padx = 20, pady = (10, 0), sticky="ew")
+        self.project_button_c.grid(row = 2, column = 0, padx = 20, pady = (10, 0), sticky="ew")
+        self.project_button_d.grid(row = 2, column = 1, padx = 20, pady = (10, 0), sticky="ew")
+        self.project_button_e.grid(row = 3, column = 0, padx = 20, pady = (10, 0), sticky="ew")
+
+        # Header: Download a fresh template
+        self.data_label = customtkinter.CTkLabel(master=self, text="Download a fresh meeting data template")
+        self.data_label.grid(row = 4, column = 0, padx = 20, pady = (20, 0), sticky="w")
+
+        # Button: Download template
+        self.master_file_button = customtkinter.CTkButton(master = self, text = "Download Template", command = self.pullTemplate)
+        self.master_file_button.grid(row = 5, column = 0, rowspan=2, padx = 20, pady = 10, sticky="ew")
+
+        # Header: Select data file
         self.data_label = customtkinter.CTkLabel(master=self, text="Select Data File")
-        self.data_label.grid(row = 5, column = 0, padx = 20, pady = (20, 0), sticky="w")
+        self.data_label.grid(row = 4, column = 1, padx = 20, pady = (20, 0), sticky="w")
 
-        # Select Excel file (contains your meeting data)
-        self.master_file_button = customtkinter.CTkButton(master = self, text = "What file do you want to add your package to?", command = self.openFile)
-        self.master_file_button.grid(row = 6, column = 0, padx = 20, pady = 10, sticky="ew")
+        # Button: Select Excel file (contains your meeting data)
+        self.master_file_button = customtkinter.CTkButton(master = self, text = "Choose File", command = self.openFile)
+        self.master_file_button.grid(row = 5, column = 1, rowspan=2, padx = 20, pady = 10, sticky="ew")
 
-        # Mtg Notes in the filename toggle
+        # Variable: Mtg Notes in filename boolean 
         self.note_button_var = customtkinter.IntVar()
 
         # Mtg Notes label
         self.mtg_notes_checkbox_label = customtkinter.CTkLabel(master = self, text = 'Include "_Mtg Notes_" in the Filename')
         self.mtg_notes_checkbox_label.grid(row = 7, column = 0, padx = 20, pady = (20, 0), sticky="w")
 
-        # Mtg Notes check button
+        # Button:  Mtg Notes Checkbox (includes/excludes "_Mtg Notes_" from the filename)
         self.note_checkbox = customtkinter.CTkCheckBox(master = self, text="OFF", variable=self.note_button_var, command = self.toggle_button)
         self.note_checkbox.grid(row = 8, column = 0, padx = 20, pady = (10, 0), sticky="ew")
 
-        # Submit button
+        # Button:  Submit - Create your templates (must have selected a data file and project)
         self.submit_button = customtkinter.CTkButton(master = self, text = "Build Templates", command = self.Submit)
-        self.submit_button.grid(row = 9, column = 0, padx = 20, pady = (30, 10), sticky="e")
+        self.submit_button.grid(row = 9, column = 1, padx = 20, pady = (30, 10), sticky="e")
     
     def toggle_button(self):
         if self.note_button_var.get() == 1:
@@ -69,6 +86,9 @@ class App(customtkinter.CTk):
         print(input_key)
 
     # Need to incorporate functionality where it determines whether the 
+
+    def pullTemplate(self):
+        pass
 
     def openFile(self):
         
