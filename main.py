@@ -76,9 +76,9 @@ class App(customtkinter.CTk):
     
     def toggle_button(self):
         if self.note_button_var.get() == 1:
-            self.note_checkbox.config(text="ON")
+            self.note_checkbox.configure(text="ON")
         else:
-            self.note_checkbox.config(text="OFF")
+            self.note_checkbox.configure(text="OFF")
     
     def Submit(self):
         input_key = self.api_entry.get() # Do this but instead of grabbing the api entry, we grab the stuff we care about
