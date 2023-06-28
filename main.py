@@ -1,6 +1,8 @@
 import customtkinter
 from tkinter import filedialog
+from tkinter.filedialog import asksaveasfilename
 import os
+from openpyxl import load_workbook
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
@@ -74,12 +76,14 @@ class App(customtkinter.CTk):
         self.submit_button = customtkinter.CTkButton(master = self, text = "Build Templates", command = self.Submit)
         self.submit_button.grid(row = 9, column = 1, padx = 20, pady = (30, 10), sticky="e")
     
+    # Update our checkbox to display on/off depending on which is shown
     def toggle_button(self):
         if self.note_button_var.get() == 1:
             self.note_checkbox.configure(text="ON")
         else:
             self.note_checkbox.configure(text="OFF")
     
+    # Method: Execute - Build meeting templates based on what's provided
     def Submit(self):
         input_key = self.api_entry.get() # Do this but instead of grabbing the api entry, we grab the stuff we care about
         # Execute the function that builds templates
@@ -87,9 +91,14 @@ class App(customtkinter.CTk):
 
     # Need to incorporate functionality where it determines whether the 
 
+    # Method: Download a fresh template
     def pullTemplate(self):
-        pass
+        filepath = asksaveasfilename(defaultextension='.xlsx', filetypes=[('Excel Files', '*.xlsx')])
 
+        wb = load_workbook('Base_Templates/yymmdd_project_meeting builder.xlsx')
+        wb.save(filepath)
+
+    # Method: Ask the user which file they want to use to create meeting templates
     def openFile(self):
         
         file = filedialog.askopenfile(mode = 'r', filetypes = [("XLSX Files", "*.xlsx")])
