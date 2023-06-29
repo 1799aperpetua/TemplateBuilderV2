@@ -3,6 +3,11 @@ from tkinter import filedialog
 from tkinter.filedialog import asksaveasfilename
 import os
 from openpyxl import load_workbook
+from docx import Document
+from docx.shared import Pt
+from docx.enum.text import WD_LINE_SPACING
+import math
+from version2 import captureTemplateData, buildTemplate
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
@@ -11,16 +16,15 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry("1000x500")
+        self.geometry("850x450")
         self.title("Template Builder")
-        self.minsize(900, 400)
+        self.minsize(800, 300)
 
         # Create a 1x5 grid
         #self.grid_rowconfigure(0, weight = 1)
         self.grid_columnconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight = 1)
 
-        
-        # Table to display text to the user
+        # Textbox: Display text to the user
         self.table_space = customtkinter.CTkTextbox(master=self, bg_color="white")
         self.table_space.grid(row = 0, column = 2, columnspan = 7, rowspan = 10, padx = 20, pady = (20, 0), sticky = "nsew")
 
@@ -29,15 +33,15 @@ class App(customtkinter.CTk):
         self.header_label.grid(row = 0, column = 0, columnspan = 2, padx = 20, pady = (20, 0), sticky="w")
 
         # Project variable
-        sport = customtkinter.StringVar()
-        sport.set("FWB")
+        self.sport = customtkinter.StringVar()
+        self.sport.set("FWB")
 
-        # Project radiobuttons
-        self.project_button_a = customtkinter.CTkRadioButton(master = self, text = "FWB", variable = sport, value = "FWB")
-        self.project_button_b = customtkinter.CTkRadioButton(master = self, text = "CMP", variable = sport, value = "CMP")
-        self.project_button_c = customtkinter.CTkRadioButton(master = self, text = "OE", variable = sport, value = "OE")
-        self.project_button_d = customtkinter.CTkRadioButton(master = self, text = "SS", variable = sport, value = "SS")
-        self.project_button_e = customtkinter.CTkRadioButton(master = self, text = "QH", variable = sport, value = "QH")
+        # Buttons: Radiobuttons for each of our projects
+        self.project_button_a = customtkinter.CTkRadioButton(master = self, text = "FWB", variable = self.sport, value = "FWB")
+        self.project_button_b = customtkinter.CTkRadioButton(master = self, text = "CMP", variable = self.sport, value = "CMP")
+        self.project_button_c = customtkinter.CTkRadioButton(master = self, text = "OE", variable = self.sport, value = "OE")
+        self.project_button_d = customtkinter.CTkRadioButton(master = self, text = "SS", variable = self.sport, value = "SS")
+        self.project_button_e = customtkinter.CTkRadioButton(master = self, text = "QH", variable = self.sport, value = "QH")
 
         self.project_button_a.grid(row = 1, column = 0, padx = 20, pady = (10, 0), sticky="ew")
         self.project_button_b.grid(row = 1, column = 1, padx = 20, pady = (10, 0), sticky="ew")
@@ -57,14 +61,14 @@ class App(customtkinter.CTk):
         self.data_label = customtkinter.CTkLabel(master=self, text="Select Data File")
         self.data_label.grid(row = 4, column = 1, padx = 20, pady = (20, 0), sticky="w")
 
-        # Button: Select Excel file (contains your meeting data)
+        # Button: Select data (Excel) file (contains your meeting data)
         self.master_file_button = customtkinter.CTkButton(master = self, text = "Choose File", command = self.openFile)
         self.master_file_button.grid(row = 5, column = 1, rowspan=2, padx = 20, pady = 10, sticky="ew")
 
         # Variable: Mtg Notes in filename boolean 
         self.note_button_var = customtkinter.IntVar()
 
-        # Mtg Notes label
+        # Header: Mtg Notes label
         self.mtg_notes_checkbox_label = customtkinter.CTkLabel(master = self, text = 'Include "_Mtg Notes_" in the Filename')
         self.mtg_notes_checkbox_label.grid(row = 7, column = 0, padx = 20, pady = (20, 0), sticky="w")
 
@@ -85,9 +89,20 @@ class App(customtkinter.CTk):
     
     # Method: Execute - Build meeting templates based on what's provided
     def Submit(self):
-        input_key = self.api_entry.get() # Do this but instead of grabbing the api entry, we grab the stuff we care about
         # Execute the function that builds templates
-        print(input_key)
+        templates = {
+        'FWB' : 'Base_Templates/fwb-template.docx',
+        'OE' : 'Base_Templates/oe-template.docx', 
+        'SS' : 'Base_Templates/ss-template.docx',
+        'CMP' : 'Base_Templates/cmp-template.docx',
+        'QH' : 'Base_Templates/qh-template.docx',
+        }
+
+        sport = self.sport.get()
+        project_template = templates.get(sport)
+        #print(project_template)
+
+        buildTemplate(template = project_template, xl_file = self.master_file_name)
 
     # Need to incorporate functionality where it determines whether the 
 
@@ -121,10 +136,10 @@ class App(customtkinter.CTk):
 
         if file:
             filepath = os.path.abspath(file.name)
-            self.current_master_file = str(filepath)
+            #self.current_master_file = str(filepath)
             master_file_full_name = str(filepath)
-            master_file_name = captureFilename(master_file_full_name)
-            self.master_file_text = customtkinter.CTkLabel(master = self, text = "Selected File: " + master_file_name)
+            self.master_file_name = captureFilename(master_file_full_name)
+            self.master_file_text = customtkinter.CTkLabel(master = self, text = "Selected File: " + self.master_file_name)
             self.master_file_text.grid(row=10, column = 0, columnspan=8, padx = 10, pady = (20, 0))
             self.open_file_bool = True
             #self.master_file_text.text = str(filepath)

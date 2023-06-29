@@ -190,10 +190,8 @@ def buildTemplate(template, xl_file):
     for meeting in meetings: # Loop through each meeting object [header_data dict, attendees list] and build a template for it
 
         header_data = meeting[0]
-        #print("Header Data", header_data)
-        print("Creating a template for:", header_data['title'], "at", header_data['time'], "on", header_data['date'])
+        #print("Creating a template for:", header_data['title'], "at", header_data['time'], "on", header_data['date'])
         attendees = meeting[1] # Current meeting's attendees
-        #print("Including the following attendees:", attendees)
 
         doc = Document(f'{template}') # Open up our project template as a word doc
 
@@ -203,7 +201,6 @@ def buildTemplate(template, xl_file):
 
         fname = craftFileName(header_data['date'], header_data['title'], header_data['time']) # Create the filename string
 
-
         # :Note: Make a function that creates a templates folder, navigates into it, then spits out each file
         doc.save(f'Templates/{fname}') # Save the updated template
 
@@ -211,6 +208,7 @@ def buildTemplate(template, xl_file):
 
 # project_template = 'sw-template.docx' # Which base_template do you want to use? - Create mappings for dif projects and dif base_template files
 
+'''
 templates = {
     '1' : 'Base_Templates/fwb-template.docx',
     '2' : 'Base_Templates/oe-template.docx', 
@@ -218,13 +216,14 @@ templates = {
     '4' : 'Base_Templates/cmp-template.docx',
     '5' : 'Base_Templates/qh-template.docx',
 }
+'''
 
-user_inp = input("Enter 1 for FWB, 2 for OE, 3 for SW, 4 for CMP, 5 for QH: ")
+#user_inp = input("Enter 1 for FWB, 2 for OE, 3 for SW, 4 for CMP, 5 for QH: ")
 
-project_template = templates.get(user_inp)
+#project_template = templates.get(user_inp)
 
-xl_file = 'mtg_builder_4-28-qh.xlsx' # Which file contains our template information?
+#xl_file = 'mtg_builder_4-28-qh.xlsx' # Which file contains our template information?
 
-buildTemplate(template = project_template, xl_file = xl_file)
+#buildTemplate(template = project_template, xl_file = xl_file)
 
 # I should have a log so that with each file we create, we also create a text file saying which meetings blah blah blah
