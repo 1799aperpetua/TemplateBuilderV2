@@ -47,7 +47,7 @@ def captureTemplateData(file):
 
     return meetings
 
-def buildTemplate(template, xl_file):
+def buildTemplate(template, xl_file, note_bool = False):
 
     def craftFileName(date, title, time):
         '''
@@ -84,7 +84,10 @@ def buildTemplate(template, xl_file):
             pass
         
         # Build the filename: yymmdd_Mtg Notes_title_time.docx
-        filename = built_date + "_" + title + "_" + mtg_time + ".docx"
+        if note_bool is True:
+            filename = built_date + "_Mtg Notes_" + title + "_" + mtg_time + ".docx"
+        else:
+            filename = built_date + "_" + title + "_" + mtg_time + ".docx"
         return filename
     
     def updateAttendees(attendees, document):

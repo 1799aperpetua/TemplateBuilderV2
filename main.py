@@ -98,11 +98,16 @@ class App(customtkinter.CTk):
         'QH' : 'Base_Templates/qh-template.docx',
         }
 
+        if self.note_button_var.get() == 1:
+            note_toggle = True
+        else:
+            note_toggle = False
+
         sport = self.sport.get()
         project_template = templates.get(sport)
         #print(project_template)
 
-        buildTemplate(template = project_template, xl_file = self.master_file_name)
+        buildTemplate(template = project_template, xl_file = self.master_file_name, note_bool = note_toggle)
 
     # Need to incorporate functionality where it determines whether the 
 
