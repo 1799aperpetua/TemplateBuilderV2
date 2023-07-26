@@ -90,6 +90,15 @@ def buildTemplate(template, xl_file, note_bool = False, note_bool2 = False):
             dd = splt_date[1]
 
         built_date = "".join([yy, mm, dd])
+
+        illegal_chars = ['/', '\\', '|']
+        for char in illegal_chars:
+            if char in title:
+                print(f"Title was: {title}\nOld character was: {char}\nNew character is: -")
+                title = title.replace(char, '-')
+                print(f"New title: {title}\n")
+
+                
         
         # Build the filename: yymmdd_Mtg Notes_title_time.docx
         if note_bool is True:
