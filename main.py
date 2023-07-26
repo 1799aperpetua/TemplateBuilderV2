@@ -54,20 +54,23 @@ def buildTemplate(template, xl_file, note_bool = False, note_bool2 = False):
         :Helper Function: builds the name of each file we are creating
         '''
 
+        print("Original time", time)
         if 'pm' in time:
             ampm = 'pm'
         else:
             ampm = 'am'
 
-        lst = [time[0]]
-        if (time[2] == '0') & (time[3] == '0'):
+        split_on_colon = time.split(":")
+        lst = [split_on_colon[0]]
+        
+        if split_on_colon[1][0] == '0' and split_on_colon[1][1] == '0':
             lst.append(ampm)
         else:
-            lst.append(time[2])
-            lst.append(time[3])
+            lst.append(split_on_colon[1][0] + split_on_colon[1][1])
             lst.append(ampm)
 
         mtg_time = "".join(lst)
+        print("New built time", mtg_time)
 
         # Build our date
         splt_date = date.split('/')
